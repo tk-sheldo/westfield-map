@@ -7,7 +7,7 @@
    "text": "I grew up in Naples, the son of a pizza maker. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque fermentum commodo accumsan. Donec vehicula rutrum dictum. Maecenas eget commodo leo, ut interdum turpis. Duis sollicitudin sem non lectus auctor, et interdum sapien facilisis. Etiam sagittis imperdiet hendrerit. Mauris tempus."
  },
  {
-   "type": "student"
+   "type": "student",
    "name": "Ricardo",
    "location_name": "Valparaiso",
    "country": "Chile",
