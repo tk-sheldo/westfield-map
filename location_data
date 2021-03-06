@@ -1,6 +1,7 @@
 [
  {
    "ID": 1,
+   "Type": "student",
    "Name": "Steven",
    "CityRegion": "Naples",
    "Country": "Italy",
@@ -8,6 +9,7 @@
  },
  {
    "ID": 2,
+   "Type": "student"
    "Name": "Ricardo",
    "CityRegion": "Valparaiso",
    "Country": "Chile",
