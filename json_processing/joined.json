@@ -1,0 +1,69 @@
+{
+    "type": "FeatureCollection",
+    "name": "geo_data",
+    "crs": {
+        "type": "name",
+        "properties": {
+            "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
+        }
+    },
+    "features": [
+        {
+            "type": "Feature",
+            "properties": {
+                "ADM0_A3": "ITA",
+                "type": "student",
+                "name": "Estino",
+                "location_name": "Naples",
+                "country": "Italy",
+                "text": "I grew up in Naples, the son of a pizza maker. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque fermentum commodo accumsan. Donec vehicula rutrum dictum. Maecenas eget commodo leo, ut interdum turpis. Duis sollicitudin sem non lectus auctor, et interdum sapien facilisis. Etiam sagittis imperdiet hendrerit. Mauris tempus.",
+                "imageURL": "https://images.squarespace-cdn.com/content/v1/5f2d83cd0a4c0b1683b8711e/1614976174924-B6WAYGUH830ISQ0FLRFS/ke17ZwdGBToddI8pDm48kEbpNpz_g84ww2Q11MA-atpZw-zPPgdn4jUwVcJE1ZvWEtT5uBSRWt4vQZAgTJucoTqqXjS3CfNDSuuf31e0tVFBtEgj52mM8uXJqXwNJ9DglJgC4wo-TZ2620CX9P9wUp1zDMfxjoXGDCxwz3Y9Vxg/IMG_1865.jpeg?format=1000w"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    14.243065492568519,
+                    40.841971105863195
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "ADM0_A3": "CHL",
+                "type": "student",
+                "name": "Ricardo",
+                "location_name": "Valpara\u00edso",
+                "country": "Chile",
+                "text": "I moved to Hartford in 2017. Westfield is the cat's pajamas. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque fermentum commodo accumsan. Donec vehicula rutrum dictum. Maecenas eget commodo leo, ut interdum turpis. Duis sollicitudin sem non lectus auctor, et interdum sapien facilisis. Etiam sagittis imperdiet hendrerit.",
+                "imageURL": "https://www.sciencemag.org/sites/default/files/styles/article_main_large/public/dogs_1280p_0.jpg?itok=cnRk0HYq"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -71.62295949149893,
+                    -33.045818607974184
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "ADM0_A3": "FRA",
+                "type": "tournament",
+                "name": "The French Open",
+                "location_name": "Paris",
+                "country": "France",
+                "text": "Westfield students Estino and Ricardo attended the 2020 French Open. Both qualified for the semifinals. Quisque fermentum commodo accumsan. Donec vehicula rutrum dictum. Maecenas eget commodo leo, ut interdum turpis. Duis sollicitudin sem non lectus auctor, et interdum sapien facilisis. Etiam sagittis imperdiet hendrerit.",
+                "imageURL": "https://photoresources.wtatennis.com/photo-resources/2019/10/11/670f0c75-7b3a-479c-98e8-84964dad9a52/XmhwYQkb.jpg?width=1440&height=797"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    2.33138946713035,
+                    48.86863878981461
+                ]
+            }
+        }
+    ]
+}
