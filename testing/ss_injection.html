@@ -1,0 +1,306 @@
+<style>
+
+    body {
+        /* try to make this more local */
+        overflow-x: hidden;
+    }
+
+    #interactive-map {
+        width: 100%;
+        height: 600px;
+    }
+
+    #interactive-map #map {
+        z-index: -1;
+        width: 100%;
+        height: 100%;
+        background-color: #243452;
+    }
+
+    .graticule {
+        fill: none;
+        stroke: #777;
+        stroke-width: .5px;
+        stroke-opacity: .5;
+    }
+
+    #interactive-map .country {
+        transition: fill .2s;
+        fill: #4B77C9;
+        stroke-width: .2px;
+        stroke: #243452;
+    }
+
+    /* fill is reversed in waterman butterfly projection - counterclockwise path? */
+
+    #interactive-map .selected_country {
+        fill: steelblue;
+    }
+
+    #interactive-map .unselected_country {
+        fill: #354C78;
+    }
+
+    #interactive-map #programs {
+        fill: #C9A14B;
+        stroke: none;
+        stroke-width: 0px;
+    }
+
+    #interactive-map .student {
+        fill: green;
+        color: green;
+    }
+
+    #interactive-map .tournament {
+        fill: red;
+        color: red;
+    }
+
+    #interactive-map .unselected_program {
+        fill: #8F7235;
+    }
+
+    #interactive-map #focus-info {
+        padding: 10px;
+        position: absolute;
+        background-color: steelblue;
+        color: black;
+        top: 35%;
+        height: 50%;
+        width: 40%;
+    }
+
+    #interactive-map #focus-info img {
+        height: 30%;
+    }
+
+</style>
+
+
+<div id="interactive-map">
+
+    <svg id="map" ></svg>
+    <div id="intro-overlay"></div>
+
+</div>
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://d3js.org/topojson.v1.min.js"></script>
+<script src="https://d3js.org/d3-geo-projection.v3.min.js"></script>
+<script src="https://unpkg.com/d3-geo@1"></script>
+<script src="https://unpkg.com/d3-geo-polygon@1"></script>
+
+<script>
+
+    let dot_size = 2
+
+    graphic = d3.select("#interactive-map")
+
+    let width = parseInt(graphic.style("width"))
+    let height = parseInt(graphic.style("height"))
+
+    let projection = {
+
+        waterman: d3.geoPolyhedralWaterman()
+                    .rotate( [20, 0] )
+                    .scale(150)
+                    .translate( [width/2, height/2 ]),
+
+        airocean: d3.geoAirocean()
+                    .scale(50)
+                    .translate( [width/2, height/2 ]),
+
+        patterson: d3.geoNaturalEarth1()
+                    .rotate( [-10, 0] )
+                    .scale(180)
+                    .translate( [width/2, height/2 ]),
+
+        mercator: d3.geoMercator()
+                    .scale( 50 )
+                    .rotate( [0,0] )
+                    .center( [0, 0] )
+                    .translate( [width/2,height/2] )
+    }
+
+    let urls = {
+
+        states: "https://raw.githubusercontent.com/tk-sheldo/westfield-map/c5e1780a78d9ab6683121ea771c1a9540cb00006/100m_countries.json",
+
+        point_loc: "https://raw.githubusercontent.com/tk-sheldo/westfield-map/c5e1780a78d9ab6683121ea771c1a9540cb00006/pop_spots.json",
+
+        point_data: "https://raw.githubusercontent.com/tk-sheldo/westfield-map/3f7a92a77fc427be63389cc3b2dc2392562c1ad3/location_data"
+    }
+
+    let geoPathGenerator = d3.geoPath()
+        .projection(projection.patterson);
+
+    let graticule = d3.geoGraticule();
+
+    graphic.select("#map").append("path")
+        .datum(graticule)
+        .attr("class", "graticule")
+        .attr("d", geoPathGenerator);
+
+    let point_data = fetch(urls.point_data).then((response) => response.json());
+
+    let img_url = "https://images.squarespace-cdn.com/content/v1/5f2d83cd0a4c0b1683b8711e/1614976174924-B6WAYGUH830ISQ0FLRFS/ke17ZwdGBToddI8pDm48kEbpNpz_g84ww2Q11MA-atpZw-zPPgdn4jUwVcJE1ZvWEtT5uBSRWt4vQZAgTJucoTqqXjS3CfNDSuuf31e0tVFBtEgj52mM8uXJqXwNJ9DglJgC4wo-TZ2620CX9P9wUp1zDMfxjoXGDCxwz3Y9Vxg/IMG_1865.jpeg?format=1000w"
+
+    class Focus {
+
+        constructor(side, id) {
+
+            this.side = side
+            this.id = id
+            this.speed = 1000
+            this.div = graphic.append("div")
+                .attr("id", "focus-info")
+
+            let focus_width = parseInt(this.div.style("width"))
+            
+            if (side === 'L') {
+
+                this.offscreen_pos = (- (focus_width + 100)) + "px"
+                this.reading_pos = "40px"
+
+            }
+
+            else {
+
+                this.offscreen_pos = width + 100 + "px"
+                this.reading_pos = (width / 2) + 40 + "px"
+            }
+
+            this.div.style("left", this.offscreen_pos)
+
+            this.get_data()
+
+        }
+
+        async get_data() {
+
+            // fetch point_data from promise object
+            let p_data = await(point_data)
+
+            // find relevant data id in point_data
+            for (var i in p_data) {
+
+                if (p_data[i].ID == this.id) {
+                    this.data = p_data[i]
+                }
+            }
+
+            try {
+                this.div.append("h1").html(this.data.Name)
+                this.div.append("p").html(this.data.Text)
+                this.div.append("img")
+                    .attr("src", img_url)
+                    .attr("alt", this.data.Name + " image")
+            }
+            catch(err) {
+                throw err
+            }
+
+            
+
+        }
+
+        enter() {
+
+            this.div.transition()
+                .duration(this.speed)
+                .style("left", this.reading_pos);
+        }
+
+        leave() {
+
+            this.div.transition()
+                .duration(this.speed)
+                .style("left", this.offscreen_pos);
+
+            setTimeout(() => { this.div.remove(); }, this.speed);
+        }
+
+    }
+
+    let focus = null;
+
+    d3.queue()
+        .defer(d3.json, urls.states)
+        .defer(d3.json, urls.point_loc)
+        .await(ready);
+
+    function ready(error, world, cities) {
+
+        if (error) throw error;
+
+        graphic.select( 'svg' ).append( "g" )
+            .attr("class", "countries")
+            .selectAll( "path" )
+            // Bind TopoJSON data elements
+            .data(topojson.feature(world, world.objects.ne_110m_admin_0_countries).features) 
+            .enter().append("path")
+                .attr("class", "country")
+                .attr("d", geoPathGenerator)
+                .attr("id", function(d) {
+                    return d.properties.ADM0_A3;
+                });
+
+        graphic.select( 'svg' ).append( "g" )
+            .attr( "id", "programs" )
+        .selectAll( "path" )
+            .data(topojson.feature(cities, cities.objects.ne_50m_populated_places_simple).features)
+            .enter()
+            .append( "path" )
+            .attr("class", "program")
+            .attr( "d", geoPathGenerator )
+            .attr( "d", geoPathGenerator.pointRadius(dot_size) )
+            .on( "mouseover" , function(d) {
+
+                country_id = "#" + d.properties.adm0_a3
+
+                graphic.selectAll(".country")
+                    .classed("unselected_country", true);
+
+                graphic.select(country_id)
+                    .classed("unselected_country", false)
+                    .classed("selected_country", true)
+
+                graphic.selectAll(".program")
+                    .classed("unselected_program", true)
+
+                //TODO: prevent the selected program from fading, issue with 'this'
+
+                //const highlight_height = 200
+                //country_bbox = d3.select(country_id).node().getBBox()
+                //scale_factor = Math.floor( 200 / country_bbox.height )
+                //d3.select(country_id).clone().attr("id", "country_clone"); 
+
+
+                // these location numbers aren't particularly well-organized..
+                if (this.getBBox().x < width/2) {
+                    focus = new Focus('R', 1);
+                }
+                else {
+                    focus = new Focus('L', 2);
+                }
+
+                focus.enter()
+
+            })
+            .on("mouseout", function() {
+
+                graphic.selectAll(".country")
+                    .classed("selected_country", false)
+                    .classed("unselected_country", false);
+
+                graphic.selectAll(".program")
+                    .classed("unselected_program", false);
+
+                focus.leave()
+
+            }); 
+
+    }
+
+</script>
