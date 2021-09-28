@@ -9,8 +9,8 @@
 <style>
 
     body {
-        overflow-x: hidden;  /* try to make this more local */
-        
+        overflow-x: hidden;  /* try to make this more local */  
+        margin: 0px;  
     }
 
     #viz {
@@ -27,7 +27,7 @@
 
     #viz #graticule {
         fill: none;
-        stroke: #777;
+        stroke: #40485a;   /* 777 */  
         stroke-width: .5px;
         stroke-opacity: .5;
     }
@@ -81,13 +81,18 @@
     }
 
     #viz .student {
-        fill: #C9A14B;
-        color: #daaa41 !important;
+        fill: #DB8742;
+        color: #DB8742 !important;
     }
 
     #viz .tournament {
         fill: #aa087c;
         color: #dc2baa !important;
+    }
+
+    #viz .speaker {
+        fill: #D9DB3F;
+        color: #D9DB3F !important;
     }
 
     #viz #focus {
@@ -139,7 +144,6 @@
 
     #viz #focus-header-info {
         padding: .5em 0 0;
-
     }
 
     #viz #focus-header-info #name {
@@ -183,7 +187,14 @@
 
     #viz #legend p {
         text-align: center;
-        margin: 5px 10px;
+        margin: 4px 9px;
+    }
+
+    #viz #legend .leg-entry {
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: center;
+        margin: 0px 10px;
     }
 
     #viz #zoom-hint {
@@ -209,12 +220,30 @@
         <svg id="map" ></svg>
         <div id="legend">
             <div class="leg">
-                <p class="student"> 
-                    Yellow dots represent Westfield students. 
-                </p>
-                <p class="tournament"> 
-                    Magenta dots represent tournaments that Westfield students attend. 
-                </p>
+                <div class="leg-entry">
+                    <svg style="width:8px;height:8px">
+                        <circle class="student" cx="4" cy="4" r="4"/>
+                    </svg>
+                    <p class="student"> 
+                        Westfield students & staff
+                    </p>
+                </div>
+                <div class="leg-entry">
+                    <svg style="width:8px;height:8px">
+                        <circle class="tournament" cx="4" cy="4" r="4"/>
+                    </svg>
+                    <p class="tournament"> 
+                        Competitions that Westfield students attend
+                    </p>
+                </div>
+                <div class="leg-entry">
+                    <svg style="width:8px;height:8px">
+                        <circle class="speaker" cx="4" cy="4" r="4"/>
+                    </svg>
+                    <p class="speaker"> 
+                        Westfield's distinguished speakers
+                    </p>
+                </div>
             </div>
             <div class="leg">
                 <p style="color:#5f92ff;font-size:1.3em;">Click on a dot to see details.</p>
@@ -231,7 +260,6 @@
     <script src="https://unpkg.com/d3-geo-polygon@1"></script>
 
     <script>
-
 
     // TODO
     // experiment with orthographic globe...?
@@ -253,18 +281,21 @@
 
         waterman: d3.geoPolyhedralWaterman()
                     .rotate( [20, 0] )
-                    .scale(Math.min(((window.innerWidth / 6) - 16), 150))
-                    .translate( [width/2, height/2 ]),
+                    .scale(Math.min(((window.innerWidth / 6) - 16), 180))
+                    .translate( [width/2, height/2 + 30]),
 
         airocean: d3.geoAirocean()
-                    .scale(33)
+                    .scale(33)   //make dynamic
                     .angle(210)
                     .translate( [width/2, height*(7/16) ]),
 
         patterson: d3.geoNaturalEarth1()
                     .rotate( [-10, 0] )
-                    .scale(180)
+                    .scale((window.innerWidth / 5))
                     .translate( [width/2, height/2 ]),
+
+                    //860 -> 170
+                    //1280 -> 240
 
         mercator: d3.geoMercator()
                     .scale( 50 )
@@ -280,7 +311,7 @@
         point_data: "https://raw.githubusercontent.com/tk-sheldo/westfield-map/4889efce42885402c7c2c0008d2ac31f8c764f6c/json_processing/joined.json"
     }
 
-    var this_projection = projection.waterman
+    var this_projection = projection.patterson
     if (is_mobile()) { this_projection = projection.airocean }
 
     const geoPathGenerator = d3.geoPath().projection(this_projection);
@@ -289,6 +320,86 @@
 
     var zoom = d3.zoom().scaleExtent([1, 8]).on("zoom", zoomed)
     var focus = null
+
+
+
+    // TESTING IMPORTS
+
+    const spreadsheetId = '1laJ6v2f77V3VhAX_RprMpZv1gquZ_POQ5-ufZcA2g80'
+    //var tx = fetch('https://docs.google.com/spreadsheets/d/1laJ6v2f77V3VhAX_RprMpZv1gquZ_POQ5-ufZcA2g80/gviz/tq?tqx=out:json')
+
+    // for testing only
+    var pd_txt_testing = '/*O_o*/google.visualization.Query.setResponse({"version":"0.6","reqId":"0","status":"ok","sig":"115749396","table":{"cols":[{"id":"A","label":"ID","type":"number","pattern":"General"},{"id":"B","label":"type","type":"string"},{"id":"C","label":"name","type":"string"},{"id":"D","label":"location_name","type":"string"},{"id":"E","label":"lat","type":"number","pattern":"General"},{"id":"F","label":"lon","type":"number","pattern":"General"},{"id":"G","label":"country","type":"string"},{"id":"H","label":"ADM0_A3","type":"string"},{"id":"I","label":"text","type":"string"},{"id":"J","label":"imageURL","type":"string"}],"rows":[{"c":[{"v":1.0,"f":"1"},{"v":"student"},{"v":"Estino"},{"v":"Naples"},{"v":40.85,"f":"40.85"},{"v":14.24,"f":"14.24"},{"v":"Italy"},{"v":"ITA"},{"v":"I grew up in Naples, the son of a pizza maker. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque fermentum commodo accumsan. Donec vehicula rutrum dictum. Maecenas eget commodo leo, ut interdum turpis. Duis sollicitudin sem non lectus auctor, et interdum sapien facilisis. Etiam sagittis imperdiet hendrerit. Mauris tempus."},{"v":"https://images.squarespace-cdn.com/content/v1/5f2d83cd0a4c0b1683b8711e/1614976174924-B6WAYGUH830ISQ0FLRFS/ke17ZwdGBToddI8pDm48kEbpNpz_g84ww2Q11MA-atpZw-zPPgdn4jUwVcJE1ZvWEtT5uBSRWt4vQZAgTJucoTqqXjS3CfNDSuuf31e0tVFBtEgj52mM8uXJqXwNJ9DglJgC4wo-TZ2620CX9P9wUp1zDMfxjoXGDCxwz3Y9Vxg/IMG_1865.jpeg?format=1000w"}]},{"c":[{"v":2.0,"f":"2"},{"v":"student"},{"v":"Ricardo"},{"v":"Valparaíso"},{"v":-33.05,"f":"-33.05"},{"v":-71.62,"f":"-71.62"},{"v":"Chile"},{"v":"CHL"},{"v":"I moved to Hartford in 2017. Westfield is the cat\u0027s pajamas. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque fermentum commodo accumsan. Donec vehicula rutrum dictum. Maecenas eget commodo leo, ut interdum turpis. Duis sollicitudin sem non lectus auctor, et interdum sapien facilisis. Etiam sagittis imperdiet hendrerit."},{"v":"https://www.sciencemag.org/sites/default/files/styles/article_main_large/public/dogs_1280p_0.jpg?itok=cnRk0HYq"}]},{"c":[{"v":3.0,"f":"3"},{"v":"tournament"},{"v":"The French Open"},{"v":"Paris"},{"v":48.87,"f":"48.87"},{"v":2.33,"f":"2.33"},{"v":"France"},{"v":"FRA"},{"v":"Westfield students Estino and Ricardo attended the 2020 French Open. Both qualified for the semifinals. Quisque fermentum commodo accumsan. Donec vehicula rutrum dictum. Maecenas eget commodo leo, ut interdum turpis. Duis sollicitudin sem non lectus auctor, et interdum sapien facilisis. Etiam sagittis imperdiet hendrerit."},{"v":"https://photoresources.wtatennis.com/photo-resources/2019/10/11/670f0c75-7b3a-479c-98e8-84964dad9a52/XmhwYQkb.jpg?width=1440&height=797"}]}],"parsedNumHeaders":1}});'
+
+    function loadPointData() {
+        const pd_spreadsheet_id = '1laJ6v2f77V3VhAX_RprMpZv1gquZ_POQ5-ufZcA2g80'
+        const url = 'https://docs.google.com/spreadsheets/d/' + pd_spreadsheet_id + '/gviz/tq?tqx=out:json';
+        var point_data_txt;
+
+        xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4) {
+                point_data_txt = xmlhttp.responseText;
+            }
+        };
+        xmlhttp.open("GET", url, false);
+        xmlhttp.send(null);
+
+        return point_data_txt
+    }
+
+    function cleanPointData(point_data_txt) {
+
+        // pulls json object from the text
+        pd_json = JSON.parse(point_data_txt.substr(46).slice(0, -2));   //might need to tweak slicing
+
+        // structure of final data object
+        var clean_pd = {
+            "type": "FeatureCollection",
+            "name": "geo_data",
+            "crs": {
+                "type": "name",
+                "properties": {
+                    "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
+                }
+            },
+            "features": []
+        };
+
+        // pulls the column headers from the spreadsheet
+        var headers = [];
+        for (col in pd_json.table.cols) { headers[col] = pd_json.table.cols[col]["label"]; }
+
+
+        for (row in pd_json.table.rows) {
+
+            // structure of each row object
+            var obj = {"type": "Feature",
+                "properties": {},
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": []
+                }
+            }
+
+            for (header in headers) {
+                obj.properties[headers[header]] = pd_json.table.rows[row].c[header].v
+            }
+
+            obj.geometry.coordinates[0] = obj.properties.lon
+            obj.geometry.coordinates[1] = obj.properties.lat
+
+            clean_pd.features[row] = obj
+
+        }
+
+        return clean_pd
+
+    }
+
+    //const pd_txt = loadPointData()
+    point_data = cleanPointData(pd_txt_testing)
+
 
     class ZoomHint {
 
@@ -407,10 +518,9 @@
     // load data for map
     d3.queue()
         .defer(d3.json, urls.shapes)
-        .defer(d3.json, urls.point_data)
         .await(draw_map);
 
-    function draw_map(error, shapes, point_data) {
+    function draw_map(error, shapes) {
 
         if (error) throw error;
 
@@ -595,6 +705,7 @@
                 d3.zoomIdentity.translate(translate[0],translate[1]).scale(scale) );
 
         zoom_hint.enter()
+        viz.select("#legend").style("opacity", 0)
     }
 
     /**
@@ -609,8 +720,8 @@
         viz.select("#programs").selectAll("circle")
             .attr("r", dot_size / transform.scale(1).k)
 
-        viz.select("#legend").style("opacity", 0)
-        setTimeout(() => { viz.select("#legend").remove(); }, zoom_speed);
+        //viz.select("#legend").style("opacity", 0)
+        //setTimeout(() => { viz.select("#legend").remove(); }, zoom_speed);
     }
 
     /**
@@ -627,11 +738,13 @@
         viz.select("#programs").selectAll("circle")
             .classed("unselected", false);
 
+        viz.select("#legend").style("opacity", 1)
+
         viz.select("#map").transition()
             .duration(zoom_speed)
             .call( zoom.transform, d3.zoomIdentity );
     }
 
-    </script>
+</script>
 </body>
 </html>
