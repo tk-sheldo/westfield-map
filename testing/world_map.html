@@ -3,19 +3,21 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" /> 
+<link rel="stylesheet" href="map_styles.css">
 </head>
 
 
 <style>
 
     body {
-        overflow-x: hidden;  /* try to make this more local */  
-        margin: 0px;  
+        /* overflow-x: hidden;  /* try to make this more local */  
+        margin: 0px;
     }
 
     #viz {
         width: 100%;
-        height: 100vh;
+        height: 90vh;
+        position: relative;
         background-color: #243452;
     }
 
@@ -72,8 +74,8 @@
     }
 
     #viz #program-shadows circle {
-        fill: green;
-        opacity: 0;
+        fill: white;
+        opacity: .6;
     }
 
     #viz #programs .unselected {
@@ -94,6 +96,7 @@
         fill: #D9DB3F;
         color: #D9DB3F !important;
     }
+
 
     #viz #focus {
         padding: 3%;
@@ -168,12 +171,10 @@
 
     #viz #legend {
         position: absolute;
-        box-sizing: border-box;
-        bottom: 3%;
-        left: 0%;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
+        /*box-sizing: border-box;*/
+        bottom: 0%;
+        width: 95%;
+        margin: 2.5%;
         transition: opacity 1500ms;
     }
 
@@ -225,7 +226,7 @@
                         <circle class="student" cx="4" cy="4" r="4"/>
                     </svg>
                     <p class="student"> 
-                        Westfield students & staff
+                        Students & Staff
                     </p>
                 </div>
                 <div class="leg-entry">
@@ -233,7 +234,7 @@
                         <circle class="tournament" cx="4" cy="4" r="4"/>
                     </svg>
                     <p class="tournament"> 
-                        Competitions that Westfield students attend
+                        Competitions
                     </p>
                 </div>
                 <div class="leg-entry">
@@ -241,7 +242,7 @@
                         <circle class="speaker" cx="4" cy="4" r="4"/>
                     </svg>
                     <p class="speaker"> 
-                        Westfield's distinguished speakers
+                        Distinguished Speakers
                     </p>
                 </div>
             </div>
@@ -271,6 +272,8 @@
         .style("padding-left", "0px")
         .style("padding-right", "0px")
 
+    d3.select('#viz').style('height')
+
     const viz = d3.select("#viz"),
         dot_size = 4,
         zoom_speed = 2000,
@@ -282,7 +285,7 @@
         waterman: d3.geoPolyhedralWaterman()
                     .rotate( [20, 0] )
                     .scale(Math.min(((window.innerWidth / 6) - 16), 180))
-                    .translate( [width/2, height/2 + 30]),
+                    .translate( [width/2, height/2]),
 
         airocean: d3.geoAirocean()
                     .scale(33)   //make dynamic
