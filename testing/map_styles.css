@@ -86,6 +86,11 @@ body {
         color: #D9DB3F !important;
     }
 
+    #viz .feature {
+        fill: #fff;
+        color: #fff !important;
+    }
+
 
     #viz #focus {
         padding: 3%;

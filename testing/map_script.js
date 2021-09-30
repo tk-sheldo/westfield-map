@@ -12,25 +12,36 @@ d3.select('#viz').select(function() { return this.parentNode.parentNode; })
 //d3.select('#viz').style('height', '90vh')
 
 const viz = d3.select("#viz"),
-    dot_size = 4,
+    dot_size = 3,
     zoom_speed = 2000,
     width = parseInt(viz.style("width")),
     height = parseInt(viz.style("height"))
 
 function calcScale(projection) {
 
-    if (width / height > 1.54) {
-        // height is the limiter
-        console.log('h')
-        return height / 4.2
-    } else {
-        console.log('w')
-        return width / 6.5
+    if (projection == 'waterman') {
+        if (width / height > 1.54) {
+            // height is the limiter
+            console.log('h')
+            return height / 4.2
+        } else {
+            console.log('w')
+            return width / 6.5
+        }
+
+    } else if (projection == 'patterson') {
+        if (width / height > 2) {
+            // height is the limiter    /5
+            console.log('h')
+            return height / 2.6
+        } else {
+            console.log('w')
+            return width / 5
+        }
     }
 
-}
 
-console.log(calcScale('w'))
+}
 
 var projection = {
 
@@ -46,7 +57,8 @@ var projection = {
 
     patterson: d3.geoNaturalEarth1()
                 .rotate( [-10, 0] )
-                .scale((window.innerWidth / 5))
+                .scale(calcScale('patterson'))
+                //.scale(200)
                 .translate( [width/2, height/2 ]),
 
                 //860 -> 170
@@ -66,7 +78,7 @@ const urls = {
     point_data: "https://raw.githubusercontent.com/tk-sheldo/westfield-map/4889efce42885402c7c2c0008d2ac31f8c764f6c/json_processing/joined.json"
 }
 
-var this_projection = projection.waterman
+var this_projection = projection.patterson
 if (is_mobile()) { this_projection = projection.airocean }
 
 const geoPathGenerator = d3.geoPath().projection(this_projection);
@@ -75,8 +87,6 @@ const graticule = d3.geoGraticule();
 
 var zoom = d3.zoom().scaleExtent([1, 8]).on("zoom", zoomed)
 var focus = null
-
-
 
 // TESTING IMPORTS
 
@@ -334,6 +344,8 @@ function draw_map(error, shapes) {
         })
         .attr("r", dot_size)
         .attr('class', function(d) {
+            return d.properties.type
+            /*
 
             if (d.properties.type == "student") {
                 return "student"
@@ -344,6 +356,7 @@ function draw_map(error, shapes) {
             else {
                 return "tournament"
             }
+            */
         })
         .classed('program', true)
 
