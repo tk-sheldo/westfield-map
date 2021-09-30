@@ -124,7 +124,10 @@ function cleanPointData(point_data_txt) {
             }
         }
 
+        var i = 0;
+
         for (var header in headers) {
+            i = i + 1;
             console.log(header);
             console.log(pd_json);
             console.log(pd_json.table.rows[row]);
