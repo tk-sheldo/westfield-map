@@ -123,9 +123,11 @@ function cleanPointData(point_data_txt) {
         }
 
         for (var header in headers) {
-            console.log(pd_json.table.rows[row])
-            console.log(pd_json.table.rows[row].c)
-            console.log(pd_json.table.rows[row].c[header])
+            console.log(header);
+            console.log(pd_json.table.rows[row]);
+            console.log(pd_json.table.rows[row].c);
+            console.log(pd_json.table.rows[row].c[header]);
+
             obj.properties[headers[header]] = pd_json.table.rows[row].c[header].v
         }
 
