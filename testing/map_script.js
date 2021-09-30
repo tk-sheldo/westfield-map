@@ -9,7 +9,7 @@ d3.select('#viz').select(function() { return this.parentNode.parentNode; })
     .style("padding-left", "0px")
     .style("padding-right", "0px")
 
-d3.select('#viz').style('height')
+//d3.select('#viz').style('height', '90vh')
 
 const viz = d3.select("#viz"),
     dot_size = 4,
@@ -17,11 +17,26 @@ const viz = d3.select("#viz"),
     width = parseInt(viz.style("width")),
     height = parseInt(viz.style("height"))
 
+function calcScale(projection) {
+
+    if (width / height > 1.54) {
+        // height is the limiter
+        console.log('h')
+        return height / 4.2
+    } else {
+        console.log('w')
+        return width / 6.5
+    }
+
+}
+
+console.log(calcScale('w'))
+
 var projection = {
 
     waterman: d3.geoPolyhedralWaterman()
                 .rotate( [20, 0] )
-                .scale(Math.min(((window.innerWidth / 6) - 16), 180))
+                .scale(calcScale('waterman'))
                 .translate( [width/2, height/2]),
 
     airocean: d3.geoAirocean()
