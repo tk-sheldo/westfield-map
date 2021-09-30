@@ -108,10 +108,12 @@ function cleanPointData(point_data_txt) {
 
     // pulls the column headers from the spreadsheet
     var headers = [];
-    for (var col in pd_json.table.cols) { headers[col] = pd_json.table.cols[col]["label"]; }
+    for (var col=0; col<pd_json.table.cols.length; col++) { 
+        headers[col] = pd_json.table.cols[col]["label"]; 
+    }
 
 
-    for (var row in pd_json.table.rows) {
+    for (var row=0; row<pd_json.table.rows.length; row++) {
 
         console.log("row", row);
 
