@@ -264,7 +264,7 @@ function draw_map(error, shapes) {
 
     if (error) throw error;
 
-    zoom_hint = new ZoomHint()
+    var zoom_hint = new ZoomHint()
 
     if (!is_mobile()) {
 
