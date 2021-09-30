@@ -91,7 +91,7 @@ function loadPointData() {
 function cleanPointData(point_data_txt) {
 
     // pulls json object from the text
-    var pd_json = JSON.parse(point_data_txt.substr(46).slice(0, -2));   //might need to tweak slicing
+    var pd_json = JSON.parse(point_data_txt.substr(47).slice(0, -2));   //might need to tweak slicing
 
     // structure of final data object
     var clean_pd = {
