@@ -255,6 +255,8 @@ class Focus {
     }
 }
 
+var zoom_hint = new ZoomHint()
+
 // load data for map
 d3.queue()
     .defer(d3.json, urls.shapes)
@@ -263,8 +265,6 @@ d3.queue()
 function draw_map(error, shapes) {
 
     if (error) throw error;
-
-    var zoom_hint = new ZoomHint()
 
     if (!is_mobile()) {
 
