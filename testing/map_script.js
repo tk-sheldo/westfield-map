@@ -400,7 +400,7 @@ function select(program_data, program_ref) {
 
     if (focus !== null) { focus.leave() }
 
-    country_id = "#" + program_data.properties.ADM0_A3
+    const country_id = "#" + program_data.properties.ADM0_A3
 
     viz.select("#countries").selectAll("path")
         .classed("unselected", true);
