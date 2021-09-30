@@ -128,7 +128,7 @@ function cleanPointData(point_data_txt) {
 
         var i = 0;
 
-        for (var header in headers) {
+        for (var header=0; header<headers.length; header++) {
             i = i + 1;
             console.log(header);
             console.log(pd_json);
