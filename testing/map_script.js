@@ -108,10 +108,10 @@ function cleanPointData(point_data_txt) {
 
     // pulls the column headers from the spreadsheet
     var headers = [];
-    for (col in pd_json.table.cols) { headers[col] = pd_json.table.cols[col]["label"]; }
+    for (var col in pd_json.table.cols) { headers[col] = pd_json.table.cols[col]["label"]; }
 
 
-    for (row in pd_json.table.rows) {
+    for (var row in pd_json.table.rows) {
 
         // structure of each row object
         var obj = {"type": "Feature",
@@ -122,7 +122,7 @@ function cleanPointData(point_data_txt) {
             }
         }
 
-        for (header in headers) {
+        for (var header in headers) {
             obj.properties[headers[header]] = pd_json.table.rows[row].c[header].v
         }
 
@@ -138,7 +138,7 @@ function cleanPointData(point_data_txt) {
 }
 
 const pd_txt = loadPointData()
-point_data = cleanPointData(pd_txt)
+const point_data = cleanPointData(pd_txt)
 
 
 class ZoomHint {
