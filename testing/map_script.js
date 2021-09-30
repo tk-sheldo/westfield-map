@@ -113,6 +113,8 @@ function cleanPointData(point_data_txt) {
 
     for (var row in pd_json.table.rows) {
 
+        console.log("row", row);
+
         // structure of each row object
         var obj = {"type": "Feature",
             "properties": {},
