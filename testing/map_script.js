@@ -76,7 +76,7 @@ function loadPointData() {
     const url = 'https://docs.google.com/spreadsheets/d/' + pd_spreadsheet_id + '/gviz/tq?tqx=out:json';
     var point_data_txt;
 
-    xmlhttp = new XMLHttpRequest();
+    var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState == 4) {
             point_data_txt = xmlhttp.responseText;
@@ -91,7 +91,7 @@ function loadPointData() {
 function cleanPointData(point_data_txt) {
 
     // pulls json object from the text
-    pd_json = JSON.parse(point_data_txt.substr(46).slice(0, -2));   //might need to tweak slicing
+    var pd_json = JSON.parse(point_data_txt.substr(46).slice(0, -2));   //might need to tweak slicing
 
     // structure of final data object
     var clean_pd = {
