@@ -137,8 +137,8 @@ function cleanPointData(point_data_txt) {
 
 }
 
-//const pd_txt = loadPointData()
-point_data = cleanPointData(pd_txt_testing)
+const pd_txt = loadPointData()
+point_data = cleanPointData(pd_txt)
 
 
 class ZoomHint {
