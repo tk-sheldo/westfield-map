@@ -1,0 +1,43 @@
+<div id="viz">
+
+    <svg id="map" ></svg>
+    <div id="legend">
+        <div class="leg">
+            <div class="leg-entry">
+                <svg style="width:8px;height:8px">
+                    <circle class="student" cx="4" cy="4" r="3"/>
+                </svg>
+                <p class="student"> 
+                    Students & Staff
+                </p>
+            </div>
+            <div class="leg-entry">
+                <svg style="width:8px;height:8px">
+                    <circle class="tournament" cx="4" cy="4" r="3"/>
+                </svg>
+                <p class="tournament"> 
+                    Competitions
+                </p>
+            </div>
+        </div>
+        <div id="feature-hint" class="leg leg-entry">
+            <p>Click on a feature</p>
+            <svg style="width:40px;height:40px">
+                    <circle class="tournament feature" cx="20" cy="20" r="13" fill-opacity=".1"/>
+            </svg>
+            <p>to learn more.</p>
+        </div>
+    </div>
+    <div id="zoom-hint">return to entire map</div>
+
+</div>
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://d3js.org/topojson.v1.min.js"></script>
+<script src="https://d3js.org/d3-geo-projection.v3.min.js"></script>
+<script src="https://unpkg.com/d3-geo@1"></script>
+<script src="https://unpkg.com/d3-geo-polygon@1"></script>
+<script type="module" src="https://tk-sheldo.github.io/westfield-map/testing/map_script.js"></script>
+
+<link rel="stylesheet" href="https://tk-sheldo.github.io/westfield-map/testing/map_styles.css">
+<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Lato'>
