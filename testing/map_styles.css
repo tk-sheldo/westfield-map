@@ -23,7 +23,7 @@ body {
 
 #viz #graticule {
     fill: none;
-    stroke: #40485a;   /* 777 */  
+    stroke: #40485a;  
     stroke-width: .5px;
     stroke-opacity: .5;
 }
@@ -144,8 +144,9 @@ body {
     width: 95%;
     margin: 2.5%;
     transition: opacity 1500ms;
-    font-family: 'Cabin',Helvetica,Arial,sans-serif;
-	font-style: italic
+    font-family: 'Lato',Helvetica,Arial,sans-serif;
+	font-style: italic;
+	font-weight: 400;
 }
 
 #viz #legend .leg {
